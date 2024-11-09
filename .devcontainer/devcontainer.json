@@ -1,0 +1,12 @@
+{
+    "name": "Gowizard",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "extensions": [
+        "golang.go",
+        "ms-vscode.remote-containers"
+    ],
+    //"forwardPorts": [],
+    //"workspaceFolder": "/workspace"
+}
