@@ -37,7 +37,7 @@ func CreateLaravelCLIProject(name string) string {
 	currentPath := GetCurrentPath()
 
 	// Build the Docker command with the new format
-	cmd := exec.Command("docker", "run", "--rm", "-it", 
+	cmd := exec.Command("docker", "run", "--rm", "-it",
 		"-v", fmt.Sprintf("%s:/app", currentPath),
 		"dabiddo/larabox",
 		"laravel", "new", name)
@@ -45,9 +45,9 @@ func CreateLaravelCLIProject(name string) string {
 	// Set up pipes for real-time output
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
-	cmd.Stdin = os.Stdin  // Important for interactive prompts
+	cmd.Stdin = os.Stdin // Important for interactive prompts
 
-	fmt.Println("\nCreating Laravel project with CLI...\n")
+	fmt.Println("\nCreating Laravel project with CLI...")
 
 	// Run the command
 	if err := cmd.Run(); err != nil {
@@ -81,11 +81,48 @@ func CreateLaravelWithMySQL(name string) string {
 	s.Style = lipgloss.NewStyle().Foreground(lipgloss.Color("205"))
 
 	p := tea.NewProgram(initialSpinnerModel(s, name, "Creating Laravel with MySQL project"))
+
+	// Create a channel to signal completion
+	done := make(chan bool)
+
+	// Run Docker command in a goroutine
+	go func() {
+		cmd := exec.Command("docker", "run", "--rm", "-v", fmt.Sprintf("%s:/app", GetCurrentPath()), "composer", "create-project", "--prefer-dist", "laravel/laravel", name)
+
+		if err := cmd.Run(); err != nil {
+			fmt.Printf("\nError creating Laravel project: %v\n", err)
+			done <- false
+			return
+		}
+
+		// Change ownership of the project directory
+		currentUser, err := user.Current()
+		if err != nil {
+			fmt.Printf("\nError getting current user: %v\n", err)
+			done <- false
+			return
+		}
+		ClearScreen()
+		ChangeOwnership(GetCurrentPath(), currentUser.Username, name)
+		CreateDevContainer(name, "_laravel.stub")
+		CreateDockerfile(name, "_laravel.stub")
+		CreateDockerCompose(name, "_laravel_mysql8.stub")
+		done <- true
+	}()
+
+	// Run the spinner program
 	p.Run()
 
-	message := fmt.Sprintf("Created Laravel with MySQL project: %s\n", name)
-	fmt.Print(message)
-	return message
+	// Wait for the background process to complete
+	success := <-done
+
+	if success {
+		message := fmt.Sprintf("Laravel project '%s' created successfully!\n", name)
+		fmt.Print(message)
+		return message
+	}
+
+	return "Failed to create Laravel project"
 }
 
 func CreateLaravelWithPostgreSQL(name string) string {
@@ -95,12 +132,49 @@ func CreateLaravelWithPostgreSQL(name string) string {
 	s.Spinner = spinner.Dot
 	s.Style = lipgloss.NewStyle().Foreground(lipgloss.Color("205"))
 
-	p := tea.NewProgram(initialSpinnerModel(s, name, "Creating Laravel with PostgreSQL project"))
+	p := tea.NewProgram(initialSpinnerModel(s, name, "Creating Laravel with MySQL project"))
+
+	// Create a channel to signal completion
+	done := make(chan bool)
+
+	// Run Docker command in a goroutine
+	go func() {
+		cmd := exec.Command("docker", "run", "--rm", "-v", fmt.Sprintf("%s:/app", GetCurrentPath()), "composer", "create-project", "--prefer-dist", "laravel/laravel", name)
+
+		if err := cmd.Run(); err != nil {
+			fmt.Printf("\nError creating Laravel project: %v\n", err)
+			done <- false
+			return
+		}
+
+		// Change ownership of the project directory
+		currentUser, err := user.Current()
+		if err != nil {
+			fmt.Printf("\nError getting current user: %v\n", err)
+			done <- false
+			return
+		}
+		ClearScreen()
+		ChangeOwnership(GetCurrentPath(), currentUser.Username, name)
+		CreateDevContainer(name, "_laravel.stub")
+		CreateDockerfile(name, "_laravel.stub")
+		CreateDockerCompose(name, "_laravel_pgsql.stub")
+		done <- true
+	}()
+
+	// Run the spinner program
 	p.Run()
 
-	message := fmt.Sprintf("Created Laravel with PostgreSQL project: %s\n", name)
-	fmt.Print(message)
-	return message
+	// Wait for the background process to complete
+	success := <-done
+
+	if success {
+		message := fmt.Sprintf("Laravel project '%s' created successfully!\n", name)
+		fmt.Print(message)
+		return message
+	}
+
+	return "Failed to create Laravel project"
 }
 
 func CreateLaravelComposerProject(name string) string {

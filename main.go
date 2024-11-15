@@ -88,10 +88,8 @@ func (m choice) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			if m.askingName {
 				switch m.cursor {
 				case 0:
-					//CreateLaravelProject(m.projectName)
 					CreateLaravelComposerProject(m.projectName)
 				case 1:
-					//CreateLaravelWithMySQL(m.projectName)
 					CreateLaravelCLIProject(m.projectName)
 				case 2:
 					CreateLaravelWithMySQL(m.projectName)
