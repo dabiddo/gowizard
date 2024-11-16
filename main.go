@@ -17,6 +17,8 @@ var options = []string{
 	"Create Nuxt Project",
 	"Create Nuxt Project with MySQL",
 	"Create Nuxt Project with Pocketbase",
+	"Create Astro Project",
+	"Create Astro Blog Project",
 	"Quit",
 }
 
@@ -101,6 +103,10 @@ func (m choice) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					CreateNuxtWithMySQL(m.projectName)
 				case 6:
 					CreateNuxtWithPocketbase(m.projectName)
+				case 7:
+					CreateAstroProject(m.projectName)
+				case 8:
+					CreateAstroBlogProject(m.projectName)
 				}
 				return m, tea.Quit
 			}
