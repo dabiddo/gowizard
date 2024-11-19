@@ -22,7 +22,7 @@ func CreateNuxtProject(name string) string {
 		"-it",
 		"node:20.11.1-alpine",
 		"sh", "-c",
-		fmt.Sprintf("apk add --no-cache git && npm install -g pnpm && pnpm dlx nuxt@latest init %s && chown -R $(id -u):$(id -g) %s", name, name))
+		fmt.Sprintf("apk add --no-cache git && npm install -g pnpm && pnpm dlx nuxt@latest init %s --yes --package-manager pnpm --git-init && chown -R $(id -u):$(id -g) %s", name, name))
 
 	// Set up pipes for real-time output
 	cmd.Stdout = os.Stdout
