@@ -2,6 +2,9 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"os/exec"
+	"os/user"
 
 	"github.com/charmbracelet/bubbles/spinner"
 	tea "github.com/charmbracelet/bubbletea"
@@ -12,14 +15,48 @@ import (
 func CreateNuxtProject(name string) string {
 	ClearScreen()
 
-	s := spinner.New()
-	s.Spinner = spinner.Dot
-	s.Style = lipgloss.NewStyle().Foreground(lipgloss.Color("205"))
+	// Build the Docker command
+	cmd := exec.Command("docker", "run", "--rm",
+		"-v", fmt.Sprintf("%s:/app", GetCurrentPath()),
+		"-w", "/app",
+		"-it",
+		"node:20.11.1-alpine",
+		"sh", "-c",
+		fmt.Sprintf("apk add --no-cache git && npm install -g pnpm && pnpm dlx nuxt@latest init %s && chown -R $(id -u):$(id -g) %s", name, name))
 
-	p := tea.NewProgram(initialSpinnerModel(s, name, "Creating Nuxt project"))
-	p.Run()
+	// Set up pipes for real-time output
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	cmd.Stdin = os.Stdin
 
-	message := fmt.Sprintf("Created Nuxt project: %s\n", name)
+	fmt.Println("Creating NuxtJs project...")
+
+	// Run the command
+	if err := cmd.Run(); err != nil {
+		fmt.Printf("\nError creating NuxtJs project: %v\n", err)
+		return "Failed to create NuxtJs project"
+	}
+
+	// Change ownership of the project directory
+	currentUser, err := user.Current()
+	if err != nil {
+		fmt.Printf("\nError getting current user: %v\n", err)
+		return "Failed to get current user"
+	}
+
+	ChangeOwnership(GetCurrentPath(), currentUser.Username, name)
+
+	// Clean up temporary files
+	cleanCmd := exec.Command("rm", "-rf", ".pnpm-store")
+	if err := cleanCmd.Run(); err != nil {
+		fmt.Printf("\nWarning: Failed to clean temporary files: %v\n", err)
+	}
+
+	// Create dev container files
+	CreateDevContainer(name, "_nuxt.stub")
+	CreateDockerfile(name, "_nuxt.stub")
+
+	message := fmt.Sprintf("NuxtJs project '%s' created successfully!\n", name)
 	fmt.Print(message)
 	return message
 }
