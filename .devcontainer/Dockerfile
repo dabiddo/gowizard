@@ -10,10 +10,16 @@ ARG USER_GID=$USER_UID
 RUN apt-get update && apt-get install -y \
     curl \
     git \
+    openssh-client \
     build-essential && \
     groupadd --gid $USER_GID $USERNAME && \
     useradd --uid $USER_UID --gid $USER_GID --create-home $USERNAME && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Create .ssh directory and set permissions
+RUN mkdir -p /home/$USERNAME/.ssh \
+    && chown -R $USERNAME:$USERNAME /home/$USERNAME/.ssh \
+    && chmod 700 /home/$USERNAME/.ssh
 
 # Set the default user and workspace
 USER $USERNAME

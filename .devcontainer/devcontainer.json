@@ -3,10 +3,21 @@
     "build": {
         "dockerfile": "Dockerfile"
     },
-    "extensions": [
-        "golang.go",
-        "ms-vscode.remote-containers"
-    ],
+    "workspaceFolder": "/workspace",
+    "remoteUser": "vscode",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "golang.go",
+                "ms-vscode.remote-containers",
+                "3timeslazy.vscodium-devpodcontainers",
+                "ms-azuretools.vscode-docker"
+            ]
+        }
+    },
     //"forwardPorts": [],
-    //"workspaceFolder": "/workspace"
+    "mounts": [
+        "source=/home/dabiddo/github,target=/tmp/github,type=bind"
+    ],
+    "postCreateCommand": "mkdir -p /home/vscode/.ssh && cp /tmp/github /home/vscode/.ssh/id_rsa && chmod 600 /home/vscode/.ssh/id_rsa && ssh-keyscan -t rsa github.com >> /home/vscode/.ssh/known_hosts"
 }

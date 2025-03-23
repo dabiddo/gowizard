@@ -9,7 +9,6 @@
         "ghcr.io/devcontainers/features/git:1": {},
         "ghcr.io/devcontainers/features/node:1": {}
     },
-    "postCreateCommand": ". ${NVM_DIR}/nvm.sh && nvm install --lts",
     "customizations": {
         "vscode": {
             "extensions": [
@@ -48,5 +47,9 @@
             ]
         }
     },
-    "remoteUser": "vscode"
+    "remoteUser": "vscode",
+    "mounts": [
+        "source=/home/$USERNAME/.ssh/github,target=/tmp/github,type=bind"
+    ],
+    "postCreateCommand": ". ${NVM_DIR}/nvm.sh && nvm install --lts && mkdir -p /home/vscode/.ssh && cp /tmp/github /home/vscode/.ssh/id_rsa && chmod 600 /home/vscode/.ssh/id_rsa && ssh-keyscan -t rsa github.com >> /home/vscode/.ssh/known_hosts"
 }
