@@ -73,9 +73,55 @@ func CreateLaravelCLIProject(name string) string {
 	return message
 }
 
-func CreateLaravelStarterProject(name string, using string) {
+func CreateLaravelStarterProject(name string, using string) string {
 	ClearScreen()
-	fmt.Printf("Creating Project: %s with starter %s\n", name, using)
+
+	// Get current working directory
+	currentPath := GetCurrentPath()
+
+	// Prepare command arguments
+	dockerArgs := []string{"run", "--rm", "-it",
+		"-v", fmt.Sprintf("%s:/app", currentPath),
+		"dabiddo/larabox",
+		"laravel", "new", name}
+
+	// Add --using parameter if provided
+	if using != "" {
+		dockerArgs = append(dockerArgs, fmt.Sprintf("--using=%s", using))
+	}
+
+	// Build the Docker command with the arguments
+	cmd := exec.Command("docker", dockerArgs...)
+
+	// Set up pipes for real-time output
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	cmd.Stdin = os.Stdin // Important for interactive prompts
+
+	fmt.Println("\nCreating Laravel project with Stertkit...")
+
+	// Run the command
+	if err := cmd.Run(); err != nil {
+		fmt.Printf("\nError creating Laravel project: %v\n", err)
+		return "Failed to create Laravel project"
+	}
+
+	// Change ownership of the project directory
+	currentUser, err := user.Current()
+	if err != nil {
+		fmt.Printf("\nError getting current user: %v\n", err)
+		return "Failed to get current user"
+	}
+
+	ClearScreen()
+	ChangeOwnership(GetCurrentPath(), currentUser.Username, name)
+	CreateDevContainer(name, "_laravel.stub")
+	CreateDockerfile(name, "_laravel.stub")
+	CreateDockerCompose(name, "_laravel.stub")
+
+	message := fmt.Sprintf("Laravel project '%s' created successfully!\n", name)
+	fmt.Print(message)
+	return message
 }
 
 func CreateLaravelWithMySQL(name string) string {

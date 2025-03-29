@@ -126,8 +126,13 @@ func main() {
 		fmt.Printf("\n---\nYou chose %s!\n", m.choice)
 		reader := bufio.NewReader(os.Stdin)
 		fmt.Print("Enter Project Name: ")
-		text, _ := reader.ReadString('\n')
-		fmt.Println(text)
+		projectName, _ := reader.ReadString('\n')
+		projectName = strings.TrimSpace(projectName) // Trim whitespace and newline
+
+		// Store the project name in the model
+		m.name = projectName
+
+		// Now pass the updated model to projectChoose
 		projectChoose(m)
 	}
 }
