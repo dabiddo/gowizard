@@ -1,17 +1,22 @@
 package main
 
+// A simple example that shows how to retrieve a value from a Bubble Tea
+// program after the Bubble Tea has exited.
+
 import (
+	"bufio"
 	"fmt"
 	"os"
+	"strings"
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
 
-// Define menu options
-var options = []string{
+var choices = []string{
 	"Create Laravel Project with Composer",
 	"Create Laravel Project with Laravel CLI",
+	"Create Laravel StarterKit Project",
 	"Create Laravel Project with MySQL",
 	"Create Laravel Project with PostgreSQL",
 	"Create Nuxt Project",
@@ -19,7 +24,6 @@ var options = []string{
 	"Create Nuxt Project with Pocketbase",
 	"Create Astro Project",
 	"Create Astro Blog Project",
-	"Quit",
 }
 
 // Styling
@@ -46,131 +50,114 @@ func printBanner() string {
 	return bannerStyle.Render(banner)
 }
 
-// choice model for the app
-type choice struct {
-	cursor      int
-	projectName string
-	askingName  bool
+type model struct {
+	cursor int
+	choice string
+	name   string
 }
 
-// Define custom quit message
-type quitMsg struct{}
-
-// Add this new type for our completion message
-type completionMsg struct {
-	message string
-}
-
-// Initialize the model
-func initialModel() choice {
-	return choice{}
-}
-
-// Init function
-func (m choice) Init() tea.Cmd {
+func (m model) Init() tea.Cmd {
 	return nil
 }
 
-// Update function
-func (m choice) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		switch msg.String() {
-		case "ctrl+c", "q":
+		case "ctrl+c", "q", "esc":
 			return m, tea.Quit
-		case "up":
-			if !m.askingName && m.cursor > 0 {
-				m.cursor--
-			}
-		case "down":
-			if !m.askingName && m.cursor < len(options)-1 {
-				m.cursor++
-			}
+
 		case "enter":
-			if m.askingName {
-				switch m.cursor {
-				case 0:
-					CreateLaravelComposerProject(m.projectName)
-				case 1:
-					CreateLaravelCLIProject(m.projectName)
-				case 2:
-					CreateLaravelWithMySQL(m.projectName)
-				case 3:
-					CreateLaravelWithPostgreSQL(m.projectName)
-				case 4:
-					CreateNuxtProject(m.projectName)
-				case 5:
-					CreateNuxtWithMySQL(m.projectName)
-				case 6:
-					CreateNuxtWithPocketbase(m.projectName)
-				case 7:
-					CreateAstroProject(m.projectName)
-				case 8:
-					CreateAstroBlogProject(m.projectName)
-				}
-				return m, tea.Quit
+			// Send the choice on the channel and exit.
+			m.choice = choices[m.cursor]
+			return m, tea.Quit
+
+		case "down", "j":
+			m.cursor++
+			if m.cursor >= len(choices) {
+				m.cursor = 0
 			}
 
-			if m.cursor == len(options)-1 {
-				return m, tea.Quit
-			}
-
-			// Initialize project name input
-			m.askingName = true
-			m.projectName = ""
-			return m, nil
-		default:
-			// Handle project name input
-			if m.askingName {
-				switch msg.String() {
-				case "backspace":
-					if len(m.projectName) > 0 {
-						m.projectName = m.projectName[:len(m.projectName)-1]
-					}
-				default:
-					// Append character to projectName if it's a single character
-					if len(msg.String()) == 1 {
-						m.projectName += msg.String()
-					}
-				}
+		case "up", "k":
+			m.cursor--
+			if m.cursor < 0 {
+				m.cursor = len(choices) - 1
 			}
 		}
-	case completionMsg:
-		return m, tea.Quit
 	}
 
 	return m, nil
 }
 
-// View function
-func (m choice) View() string {
-	if m.askingName {
-		return "Enter project name: " + m.projectName + "\n\nPress 'enter' to confirm"
-	}
+func (m model) View() string {
 
-	var menu string
-	menu += printBanner() + "\n" + AccessPath() + "\n\n"
+	s := strings.Builder{}
+	s.WriteString("What kind of Project would you like to create?\n\n")
 
-	for i, option := range options {
-		cursor := "  "
+	for i := 0; i < len(choices); i++ {
 		if m.cursor == i {
-			cursor = ">"
-		}
-		if i == m.cursor {
-			menu += activeStyle.Render(cursor+" "+option) + "\n"
+			s.WriteString("(•) ")
 		} else {
-			menu += optionStyle.Render(cursor+" "+option) + "\n"
+			s.WriteString("( ) ")
 		}
+		s.WriteString(choices[i])
+		s.WriteString("\n")
 	}
+	s.WriteString("\n(press q to quit)\n")
 
-	menu += "\nPress 'enter' to select, 'q' to quit."
-	return menu
+	return s.String()
 }
 
 func main() {
-	// Start the Bubble Tea program
-	if err := tea.NewProgram(initialModel()).Start(); err != nil {
-		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+	p := tea.NewProgram(model{})
+	var menu string
+	menu += printBanner() + "\n" + AccessPath() + "\n\n"
+	fmt.Printf(menu)
+	// Run returns the model as a tea.Model.
+	m, err := p.Run()
+	if err != nil {
+		fmt.Println("Oh no:", err)
 		os.Exit(1)
+	}
+
+	// Assert the final tea.Model to our local model and print the choice.
+	if m, ok := m.(model); ok && m.choice != "" {
+		ClearScreen()
+		fmt.Printf("\n---\nYou chose %s!\n", m.choice)
+		reader := bufio.NewReader(os.Stdin)
+		fmt.Print("Enter Project Name: ")
+		text, _ := reader.ReadString('\n')
+		fmt.Println(text)
+		projectChoose(m)
+	}
+}
+
+func projectChoose(m model) {
+	switch m.cursor {
+	case 0:
+		CreateLaravelComposerProject(m.name)
+	case 1:
+		CreateLaravelCLIProject(m.name)
+	case 2:
+		reader := bufio.NewReader(os.Stdin)
+		fmt.Print("Enter starter Project (larave/react): ")
+		starter, _ := reader.ReadString('\n')
+		CreateLaravelStarterProject(m.name, starter)
+	case 3:
+		CreateLaravelWithMySQL(m.name)
+	case 4:
+		CreateLaravelWithPostgreSQL(m.name)
+	case 5:
+		CreateNuxtProject(m.name)
+	case 6:
+		CreateNuxtWithMySQL(m.name)
+	case 7:
+		CreateNuxtWithPocketbase(m.name)
+	case 8:
+		CreateAstroProject(m.name)
+	case 9:
+		CreateAstroBlogProject(m.name)
+	default:
+		fmt.Printf("Invalid option")
 	}
 }

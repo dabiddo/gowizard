@@ -73,6 +73,11 @@ func CreateLaravelCLIProject(name string) string {
 	return message
 }
 
+func CreateLaravelStarterProject(name string, using string) {
+	ClearScreen()
+	fmt.Printf("Creating Project: %s with starter %s\n", name, using)
+}
+
 func CreateLaravelWithMySQL(name string) string {
 	ClearScreen()
 
