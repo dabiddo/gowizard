@@ -147,3 +147,82 @@ func CreateDockerfile(projectName string, stubName string) error {
 
 	return nil
 }
+
+// Add this new function
+func CreateDevContainerInCurrent(stubName string) error {
+	// Define the path for the .devcontainer directory in current path
+	devContainerDir := ".devcontainer"
+
+	// Create the .devcontainer directory
+	if err := os.MkdirAll(devContainerDir, 0755); err != nil {
+		return fmt.Errorf("failed to create folder %s: %w", devContainerDir, err)
+	}
+	fmt.Println("Folder '.devcontainer' created in current directory")
+
+	// Define paths for devcontainer.json and stub file
+	devContainerJSONPath := filepath.Join(devContainerDir, "devcontainer.json")
+	stubPath := filepath.Join("stubs", "devcontainer", stubName)
+
+	// Read the stub file content from embedded files
+	stubContent, err := devContainerStubs.ReadFile(stubPath)
+	if err != nil {
+		return fmt.Errorf("failed to read stub file %s: %w", stubPath, err)
+	}
+
+	// Replace $DIR with current directory name
+	currentDir := filepath.Base(GetCurrentPath())
+	contentString := strings.ReplaceAll(string(stubContent), "$DIR", currentDir)
+
+	// Write the modified content to devcontainer.json
+	if err := os.WriteFile(devContainerJSONPath, []byte(contentString), 0644); err != nil {
+		return fmt.Errorf("failed to write to devcontainer.json: %w", err)
+	}
+	fmt.Println("devcontainer.json created successfully in .devcontainer")
+
+	return nil
+}
+
+// Add these new functions
+func CreateDockerfileInCurrent(stubName string) error {
+	// Define the path for Dockerfile inside .devcontainer
+	dockerfilePath := filepath.Join(".devcontainer", "Dockerfile")
+
+	// Read the stub file content from embedded files
+	stubPath := filepath.Join("stubs", "dockerfile", stubName)
+	stubContent, err := devContainerStubs.ReadFile(stubPath)
+	if err != nil {
+		return fmt.Errorf("failed to read stub file %s: %w", stubPath, err)
+	}
+
+	// Write the content to Dockerfile
+	if err := os.WriteFile(dockerfilePath, stubContent, 0644); err != nil {
+		return fmt.Errorf("failed to write to Dockerfile: %w", err)
+	}
+	fmt.Println("Dockerfile created successfully in .devcontainer")
+
+	return nil
+}
+
+func CreateDockerComposeInCurrent(stubName string) error {
+	// Define the path for docker-compose.yml inside .devcontainer
+	dockerComposePath := filepath.Join(".devcontainer", "docker-compose.yml")
+
+	// Read the stub file content from embedded files
+	stubPath := filepath.Join("stubs", "compose", stubName)
+	stubContent, err := devContainerStubs.ReadFile(stubPath)
+	if err != nil {
+		return fmt.Errorf("failed to read stub file %s: %w", stubPath, err)
+	}
+
+	// Replace $DIR with current directory name
+	currentDir := filepath.Base(GetCurrentPath())
+	contentString := strings.ReplaceAll(string(stubContent), "$DIR", currentDir)
+
+	// Write the modified content to docker-compose.yml
+	if err := os.WriteFile(dockerComposePath, []byte(contentString), 0644); err != nil {
+		return fmt.Errorf("failed to write to docker-compose.yml: %w", err)
+	}
+	fmt.Println("docker-compose.yml created successfully in .devcontainer")
+
+	return nil
+}
