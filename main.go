@@ -23,6 +23,7 @@ var choices = []string{
 	"Create Nuxt Project with Pocketbase",
 	"Create Astro Project",
 	"Create Astro Blog Project",
+	"Create Refine.dev Blog Project",
 }
 
 var initChoices = []string{
@@ -237,6 +238,8 @@ func projectChoose(m model) {
 		CreateAstroProject(m.name)
 	case 9:
 		CreateAstroBlogProject(m.name)
+	case 10:
+		CreateRefineProject(m.name)
 	default:
 		fmt.Printf("Invalid option")
 	}
