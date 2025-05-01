@@ -50,7 +50,7 @@ func CreateRefineProject(name string) string {
 
 	// Create dev container files
 	CreateDevContainer(name, "_astro.stub")
-	CreateDockerfile(name, "_astro.stub")
+	CreateDockerfile(name, "_nodejs.stub")
 
 	message := fmt.Sprintf("Refine.dev project '%s' created successfully!\n", name)
 	fmt.Print(message)
