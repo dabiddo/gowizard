@@ -43,9 +43,13 @@ func CreateRefineProject(name string) string {
 	ChangeOwnership(GetCurrentPath(), currentUser.Username, name)
 
 	//Clean node_modules, package.json & package-lock.json created in root directory
-	cleanCmd := exec.Command("rm", "-rf", "node_modules", "package.json", "package-lock.json")
+	fmt.Println("Cleaning up temporary files...")
+
+	// Use bash with -c to handle both files and directories with proper error handling
+	cleanCmd := exec.Command("bash", "-c", "sudo rm -rf node_modules/ 2>/dev/null; rm -f package.json package-lock.json 2>/dev/null || true")
 	if err := cleanCmd.Run(); err != nil {
 		fmt.Printf("\nWarning: Failed to clean temporary files: %v\n", err)
+		// Continue execution even if cleanup fails
 	}
 
 	// Create dev container files
