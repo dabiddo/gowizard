@@ -25,6 +25,7 @@ var choices = []string{
 	"Create Astro Blog Project",
 	"Create Refine.dev Project",
 	"Create Tanstack Project",
+	"Create NestJs Project",
 }
 
 var initChoices = []string{
@@ -243,6 +244,8 @@ func projectChoose(m model) {
 		CreateRefineProject(m.name)
 	case 11:
 		CreateTanstackProject(m.name)
+	case 12:
+		CreateNestJSProject(m.name)
 	default:
 		fmt.Printf("Invalid option")
 	}
