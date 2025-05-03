@@ -3,7 +3,7 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
-    image: $DIR-app #name of the image
+    image: $DIR_app #name of the image
     environment:
         SERVER_NAME: ":80"
     # uncomment the following line if you want to run this in a production environment

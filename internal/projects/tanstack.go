@@ -1,7 +1,8 @@
-package main
+package projects
 
 import (
 	"fmt"
+	"gowizard/internal/utils"
 	"os"
 	"os/exec"
 	"os/user"
@@ -9,11 +10,11 @@ import (
 
 func CreateTanstackProject(name string) string {
 
-	ClearScreen()
+	utils.ClearScreen()
 
 	// Build the Docker command
 	cmd := exec.Command("docker", "run", "--rm",
-		"-v", fmt.Sprintf("%s:/app", GetCurrentPath()),
+		"-v", fmt.Sprintf("%s:/app", utils.GetCurrentPath()),
 		"-w", "/app",
 		"-it",
 		"node:lts-alpine",
@@ -41,11 +42,11 @@ func CreateTanstackProject(name string) string {
 		return "Failed to get current user"
 	}
 
-	ChangeOwnership(GetCurrentPath(), currentUser.Username, name)
+	utils.ChangeOwnership(utils.GetCurrentPath(), currentUser.Username, name)
 
 	// Create dev container files
-	CreateDevContainer(name, "_astro.stub")
-	CreateDockerfile(name, "_nodejs.stub")
+	utils.CreateDevContainer(name, "_astro.stub")
+	utils.CreateDockerfile(name, "_nodejs.stub")
 
 	message := fmt.Sprintf("Tanstack project '%s' created successfully!\n", name)
 	fmt.Print(message)

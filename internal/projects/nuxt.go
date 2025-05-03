@@ -1,7 +1,8 @@
-package main
+package projects
 
 import (
 	"fmt"
+	"gowizard/internal/utils"
 	"os"
 	"os/exec"
 	"os/user"
@@ -13,11 +14,11 @@ import (
 
 // Create a new Nuxt.js project
 func CreateNuxtProject(name string) string {
-	ClearScreen()
+	utils.ClearScreen()
 
 	// Build the Docker command
 	cmd := exec.Command("docker", "run", "--rm",
-		"-v", fmt.Sprintf("%s:/app", GetCurrentPath()),
+		"-v", fmt.Sprintf("%s:/app", utils.GetCurrentPath()),
 		"-w", "/app",
 		"-it",
 		"node:20.11.1-alpine",
@@ -44,7 +45,7 @@ func CreateNuxtProject(name string) string {
 		return "Failed to get current user"
 	}
 
-	ChangeOwnership(GetCurrentPath(), currentUser.Username, name)
+	utils.ChangeOwnership(utils.GetCurrentPath(), currentUser.Username, name)
 
 	// Clean up temporary files
 	cleanCmd := exec.Command("rm", "-rf", ".pnpm-store")
@@ -53,8 +54,8 @@ func CreateNuxtProject(name string) string {
 	}
 
 	// Create dev container files
-	CreateDevContainer(name, "_nuxt.stub")
-	CreateDockerfile(name, "_nuxt.stub")
+	utils.CreateDevContainer(name, "_nuxt.stub")
+	utils.CreateDockerfile(name, "_nuxt.stub")
 
 	message := fmt.Sprintf("NuxtJs project '%s' created successfully!\n", name)
 	fmt.Print(message)
@@ -63,7 +64,7 @@ func CreateNuxtProject(name string) string {
 
 // Create a new Nuxt.js with MySQL project
 func CreateNuxtWithMySQL(name string) string {
-	ClearScreen()
+	utils.ClearScreen()
 
 	s := spinner.New()
 	s.Spinner = spinner.Dot
@@ -79,7 +80,7 @@ func CreateNuxtWithMySQL(name string) string {
 
 // Create a new Nuxt.js with Pocketbase project
 func CreateNuxtWithPocketbase(name string) string {
-	ClearScreen()
+	utils.ClearScreen()
 
 	s := spinner.New()
 	s.Spinner = spinner.Dot
