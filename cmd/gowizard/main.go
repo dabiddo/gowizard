@@ -4,6 +4,8 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"gowizard/internal/projects"
+	"gowizard/internal/utils"
 	"os"
 	"path/filepath"
 	"strings"
@@ -174,7 +176,7 @@ func main() {
 	flag.Parse()
 
 	var menu string
-	menu += printBanner() + "\n" + AccessPath() + "\n\n"
+	menu += printBanner() + "\n" + utils.AccessPath() + "\n\n"
 	fmt.Printf(menu)
 
 	var finalModel tea.Model
@@ -197,13 +199,13 @@ func main() {
 
 	if *initFlag {
 		if m, ok := finalModel.(initModel); ok && m.choice != "" {
-			ClearScreen()
+			utils.ClearScreen()
 			fmt.Printf("\n---\nYou chose %s!\n", m.choice)
 			handleInitProject(m)
 		}
 	} else {
 		if m, ok := finalModel.(model); ok && m.choice != "" {
-			ClearScreen()
+			utils.ClearScreen()
 			fmt.Printf("\n---\nYou chose %s!\n", m.choice)
 			reader := bufio.NewReader(os.Stdin)
 			fmt.Print("Enter Project Name: ")
@@ -218,54 +220,54 @@ func main() {
 func projectChoose(m model) {
 	switch m.cursor {
 	case 0:
-		CreateLaravelComposerProject(m.name)
+		projects.CreateLaravelComposerProject(m.name)
 	case 1:
-		CreateLaravelCLIProject(m.name)
+		projects.CreateLaravelCLIProject(m.name)
 	case 2:
 		reader := bufio.NewReader(os.Stdin)
 		fmt.Print("Enter starter Project (larave/react): ")
 		starter, _ := reader.ReadString('\n')
-		CreateLaravelStarterProject(m.name, starter)
+		projects.CreateLaravelStarterProject(m.name, starter)
 	case 3:
-		CreateLaravelWithMySQL(m.name)
+		projects.CreateLaravelWithMySQL(m.name)
 	case 4:
-		CreateLaravelWithPostgreSQL(m.name)
+		projects.CreateLaravelWithPostgreSQL(m.name)
 	case 5:
-		CreateNuxtProject(m.name)
+		projects.CreateNuxtProject(m.name)
 	case 6:
-		CreateNuxtWithMySQL(m.name)
+		projects.CreateNuxtWithMySQL(m.name)
 	case 7:
-		CreateNuxtWithPocketbase(m.name)
+		projects.CreateNuxtWithPocketbase(m.name)
 	case 8:
-		CreateAstroProject(m.name)
+		projects.CreateAstroProject(m.name)
 	case 9:
-		CreateAstroBlogProject(m.name)
+		projects.CreateAstroBlogProject(m.name)
 	case 10:
-		CreateRefineProject(m.name)
+		projects.CreateRefineProject(m.name)
 	case 11:
-		CreateTanstackProject(m.name)
+		projects.CreateTanstackProject(m.name)
 	case 12:
-		CreateNestJSProject(m.name)
+		projects.CreateNestJSProject(m.name)
 	default:
 		fmt.Printf("Invalid option")
 	}
 }
 
 func handleInitProject(m initModel) {
-	currentDir := filepath.Base(GetCurrentPath())
+	currentDir := filepath.Base(utils.GetCurrentPath())
 	switch m.cursor {
 	case 0:
 		// Initialize PHP project
 		fmt.Printf("Initializing PHP project: %s\n", m.name)
-		phpProject(currentDir)
+		projects.PhpProject(currentDir)
 	case 1:
 		// Initialize PHP project with FrankenPHP
 		fmt.Printf("Initializing PHP project with FrankenPHP: %s\n", m.name)
-		frankenProject(currentDir)
+		projects.FrankenProject(currentDir)
 	case 2:
 		// Initialize NodeJs project
 		fmt.Printf("Initializing NodeJs project: %s\n", m.name)
-		nodeProject(currentDir)
+		projects.NodeProject(currentDir)
 	default:
 		fmt.Printf("Invalid option")
 	}

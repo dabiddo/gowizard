@@ -1,7 +1,8 @@
-package main
+package projects
 
 import (
 	"fmt"
+	"gowizard/internal/utils"
 	"os"
 	"os/exec"
 	"os/user"
@@ -14,7 +15,7 @@ import (
 
 // Laravel project functions
 func CreateLaravelProject(name string) string {
-	ClearScreen()
+	utils.ClearScreen()
 
 	// Initialize spinner
 	s := spinner.New()
@@ -31,10 +32,10 @@ func CreateLaravelProject(name string) string {
 }
 
 func CreateLaravelCLIProject(name string) string {
-	ClearScreen()
+	utils.ClearScreen()
 
 	// Get current working directory
-	currentPath := GetCurrentPath()
+	currentPath := utils.GetCurrentPath()
 
 	// Build the Docker command with the new format
 	cmd := exec.Command("docker", "run", "--rm", "-it",
@@ -62,11 +63,11 @@ func CreateLaravelCLIProject(name string) string {
 		return "Failed to get current user"
 	}
 
-	ClearScreen()
-	ChangeOwnership(GetCurrentPath(), currentUser.Username, name)
-	CreateDevContainer(name, "_laravel.stub")
-	CreateDockerfile(name, "_laravel.stub")
-	CreateDockerCompose(name, "_laravel.stub")
+	utils.ClearScreen()
+	utils.ChangeOwnership(utils.GetCurrentPath(), currentUser.Username, name)
+	utils.CreateDevContainer(name, "_laravel.stub")
+	utils.CreateDockerfile(name, "_laravel.stub")
+	utils.CreateDockerCompose(name, "_laravel.stub")
 
 	message := fmt.Sprintf("Laravel project '%s' created successfully!\n", name)
 	fmt.Print(message)
@@ -74,10 +75,10 @@ func CreateLaravelCLIProject(name string) string {
 }
 
 func CreateLaravelStarterProject(name string, using string) string {
-	ClearScreen()
+	utils.ClearScreen()
 
 	// Get current working directory
-	currentPath := GetCurrentPath()
+	currentPath := utils.GetCurrentPath()
 
 	// Prepare command arguments
 	dockerArgs := []string{"run", "--rm", "-it",
@@ -113,11 +114,11 @@ func CreateLaravelStarterProject(name string, using string) string {
 		return "Failed to get current user"
 	}
 
-	ClearScreen()
-	ChangeOwnership(GetCurrentPath(), currentUser.Username, name)
-	CreateDevContainer(name, "_laravel.stub")
-	CreateDockerfile(name, "_laravel.stub")
-	CreateDockerCompose(name, "_laravel.stub")
+	utils.ClearScreen()
+	utils.ChangeOwnership(utils.GetCurrentPath(), currentUser.Username, name)
+	utils.CreateDevContainer(name, "_laravel.stub")
+	utils.CreateDockerfile(name, "_laravel.stub")
+	utils.CreateDockerCompose(name, "_laravel.stub")
 
 	message := fmt.Sprintf("Laravel project '%s' created successfully!\n", name)
 	fmt.Print(message)
@@ -125,7 +126,7 @@ func CreateLaravelStarterProject(name string, using string) string {
 }
 
 func CreateLaravelWithMySQL(name string) string {
-	ClearScreen()
+	utils.ClearScreen()
 
 	s := spinner.New()
 	s.Spinner = spinner.Dot
@@ -138,7 +139,7 @@ func CreateLaravelWithMySQL(name string) string {
 
 	// Run Docker command in a goroutine
 	go func() {
-		cmd := exec.Command("docker", "run", "--rm", "-v", fmt.Sprintf("%s:/app", GetCurrentPath()), "composer", "create-project", "--prefer-dist", "laravel/laravel", name)
+		cmd := exec.Command("docker", "run", "--rm", "-v", fmt.Sprintf("%s:/app", utils.GetCurrentPath()), "composer", "create-project", "--prefer-dist", "laravel/laravel", name)
 
 		if err := cmd.Run(); err != nil {
 			fmt.Printf("\nError creating Laravel project: %v\n", err)
@@ -153,11 +154,11 @@ func CreateLaravelWithMySQL(name string) string {
 			done <- false
 			return
 		}
-		ClearScreen()
-		ChangeOwnership(GetCurrentPath(), currentUser.Username, name)
-		CreateDevContainer(name, "_laravel.stub")
-		CreateDockerfile(name, "_laravel.stub")
-		CreateDockerCompose(name, "_laravel_mysql8.stub")
+		utils.ClearScreen()
+		utils.ChangeOwnership(utils.GetCurrentPath(), currentUser.Username, name)
+		utils.CreateDevContainer(name, "_laravel.stub")
+		utils.CreateDockerfile(name, "_laravel.stub")
+		utils.CreateDockerCompose(name, "_laravel_mysql8.stub")
 		done <- true
 	}()
 
@@ -177,7 +178,7 @@ func CreateLaravelWithMySQL(name string) string {
 }
 
 func CreateLaravelWithPostgreSQL(name string) string {
-	ClearScreen()
+	utils.ClearScreen()
 
 	s := spinner.New()
 	s.Spinner = spinner.Dot
@@ -190,7 +191,7 @@ func CreateLaravelWithPostgreSQL(name string) string {
 
 	// Run Docker command in a goroutine
 	go func() {
-		cmd := exec.Command("docker", "run", "--rm", "-v", fmt.Sprintf("%s:/app", GetCurrentPath()), "composer", "create-project", "--prefer-dist", "laravel/laravel", name)
+		cmd := exec.Command("docker", "run", "--rm", "-v", fmt.Sprintf("%s:/app", utils.GetCurrentPath()), "composer", "create-project", "--prefer-dist", "laravel/laravel", name)
 
 		if err := cmd.Run(); err != nil {
 			fmt.Printf("\nError creating Laravel project: %v\n", err)
@@ -205,11 +206,11 @@ func CreateLaravelWithPostgreSQL(name string) string {
 			done <- false
 			return
 		}
-		ClearScreen()
-		ChangeOwnership(GetCurrentPath(), currentUser.Username, name)
-		CreateDevContainer(name, "_laravel.stub")
-		CreateDockerfile(name, "_laravel.stub")
-		CreateDockerCompose(name, "_laravel_pgsql.stub")
+		utils.ClearScreen()
+		utils.ChangeOwnership(utils.GetCurrentPath(), currentUser.Username, name)
+		utils.CreateDevContainer(name, "_laravel.stub")
+		utils.CreateDockerfile(name, "_laravel.stub")
+		utils.CreateDockerCompose(name, "_laravel_pgsql.stub")
 		done <- true
 	}()
 
@@ -229,7 +230,7 @@ func CreateLaravelWithPostgreSQL(name string) string {
 }
 
 func CreateLaravelComposerProject(name string) string {
-	ClearScreen()
+	utils.ClearScreen()
 
 	// Initialize spinner
 	s := spinner.New()
@@ -243,7 +244,7 @@ func CreateLaravelComposerProject(name string) string {
 
 	// Run Docker command in a goroutine
 	go func() {
-		cmd := exec.Command("docker", "run", "--rm", "-v", fmt.Sprintf("%s:/app", GetCurrentPath()), "composer", "create-project", "--prefer-dist", "laravel/laravel", name)
+		cmd := exec.Command("docker", "run", "--rm", "-v", fmt.Sprintf("%s:/app", utils.GetCurrentPath()), "composer", "create-project", "--prefer-dist", "laravel/laravel", name)
 
 		if err := cmd.Run(); err != nil {
 			fmt.Printf("\nError creating Laravel project: %v\n", err)
@@ -258,11 +259,11 @@ func CreateLaravelComposerProject(name string) string {
 			done <- false
 			return
 		}
-		ClearScreen()
-		ChangeOwnership(GetCurrentPath(), currentUser.Username, name)
-		CreateDevContainer(name, "_laravel.stub")
-		CreateDockerfile(name, "_laravel.stub")
-		CreateDockerCompose(name, "_laravel.stub")
+		utils.ClearScreen()
+		utils.ChangeOwnership(utils.GetCurrentPath(), currentUser.Username, name)
+		utils.CreateDevContainer(name, "_laravel.stub")
+		utils.CreateDockerfile(name, "_laravel.stub")
+		utils.CreateDockerCompose(name, "_laravel.stub")
 		done <- true
 	}()
 

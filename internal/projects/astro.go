@@ -1,18 +1,19 @@
-package main
+package projects
 
 import (
 	"fmt"
+	"gowizard/internal/utils"
 	"os"
 	"os/exec"
 	"os/user"
 )
 
 func CreateAstroProject(name string) string {
-	ClearScreen()
+	utils.ClearScreen()
 
 	// Build the Docker command
 	cmd := exec.Command("docker", "run", "--rm",
-		"-v", fmt.Sprintf("%s:/app", GetCurrentPath()),
+		"-v", fmt.Sprintf("%s:/app", utils.GetCurrentPath()),
 		"-w", "/app",
 		"-it",
 		"node:20.11.1-alpine",
@@ -40,7 +41,7 @@ func CreateAstroProject(name string) string {
 		return "Failed to get current user"
 	}
 
-	ChangeOwnership(GetCurrentPath(), currentUser.Username, name)
+	utils.ChangeOwnership(utils.GetCurrentPath(), currentUser.Username, name)
 
 	// Clean up temporary files
 	cleanCmd := exec.Command("rm", "-rf", ".pnpm-store")
@@ -49,8 +50,8 @@ func CreateAstroProject(name string) string {
 	}
 
 	// Create dev container files
-	CreateDevContainer(name, "_astro.stub")
-	CreateDockerfile(name, "_astro.stub")
+	utils.CreateDevContainer(name, "_astro.stub")
+	utils.CreateDockerfile(name, "_astro.stub")
 
 	message := fmt.Sprintf("Astro project '%s' created successfully!\n", name)
 	fmt.Print(message)
@@ -58,11 +59,11 @@ func CreateAstroProject(name string) string {
 }
 
 func CreateAstroBlogProject(name string) string {
-	ClearScreen()
+	utils.ClearScreen()
 
 	// Build the Docker command
 	cmd := exec.Command("docker", "run", "--rm",
-		"-v", fmt.Sprintf("%s:/app", GetCurrentPath()),
+		"-v", fmt.Sprintf("%s:/app", utils.GetCurrentPath()),
 		"-w", "/app",
 		"-it",
 		"node:20.11.1-alpine",
@@ -90,7 +91,7 @@ func CreateAstroBlogProject(name string) string {
 		return "Failed to get current user"
 	}
 
-	ChangeOwnership(GetCurrentPath(), currentUser.Username, name)
+	utils.ChangeOwnership(utils.GetCurrentPath(), currentUser.Username, name)
 
 	// Clean up temporary files
 	cleanCmd := exec.Command("rm", "-rf", ".pnpm-store")
@@ -99,8 +100,8 @@ func CreateAstroBlogProject(name string) string {
 	}
 
 	// Create dev container files
-	CreateDevContainer(name, "_astro.stub")
-	CreateDockerfile(name, "_astro.stub")
+	utils.CreateDevContainer(name, "_astro.stub")
+	utils.CreateDockerfile(name, "_astro.stub")
 
 	message := fmt.Sprintf("Astro Blog project '%s' created successfully!\n", name)
 	fmt.Print(message)

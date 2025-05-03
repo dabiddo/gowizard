@@ -1,18 +1,19 @@
-package main
+package projects
 
 import (
 	"fmt"
+	"gowizard/internal/utils"
 	"os"
 	"os/exec"
 	"os/user"
 )
 
 func CreateRefineProject(name string) string {
-	ClearScreen()
+	utils.ClearScreen()
 
 	// Build the Docker command
 	cmd := exec.Command("docker", "run", "--rm",
-		"-v", fmt.Sprintf("%s:/app", GetCurrentPath()),
+		"-v", fmt.Sprintf("%s:/app", utils.GetCurrentPath()),
 		"-w", "/app",
 		"-it",
 		"node:lts-alpine",
@@ -40,7 +41,7 @@ func CreateRefineProject(name string) string {
 		return "Failed to get current user"
 	}
 
-	ChangeOwnership(GetCurrentPath(), currentUser.Username, name)
+	utils.ChangeOwnership(utils.GetCurrentPath(), currentUser.Username, name)
 
 	//Clean node_modules, package.json & package-lock.json created in root directory
 	fmt.Println("Cleaning up temporary files...")
@@ -53,8 +54,8 @@ func CreateRefineProject(name string) string {
 	}
 
 	// Create dev container files
-	CreateDevContainer(name, "_astro.stub")
-	CreateDockerfile(name, "_nodejs.stub")
+	utils.CreateDevContainer(name, "_astro.stub")
+	utils.CreateDockerfile(name, "_nodejs.stub")
 
 	message := fmt.Sprintf("Refine.dev project '%s' created successfully!\n", name)
 	fmt.Print(message)
