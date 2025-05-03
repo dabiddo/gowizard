@@ -13,5 +13,5 @@ Once you have cloned the repo, installed the packages, you can build your own `g
 ```bash
 go mod tidy
 
-go build -o gowizard
+go build -o gowizard ./cmd/gowizard
 ```
