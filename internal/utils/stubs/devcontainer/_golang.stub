@@ -3,7 +3,6 @@
     "build": {
         "dockerfile": "Dockerfile"
     },
-    "workspaceFolder": "/workspace",
     "remoteUser": "vscode",
     "customizations": {
         "vscode": {
@@ -14,5 +13,6 @@
                 "ms-azuretools.vscode-docker"
             ]
         }
-    }
+    },
+    "postCreateCommand": "go mod init $DIR"
 }

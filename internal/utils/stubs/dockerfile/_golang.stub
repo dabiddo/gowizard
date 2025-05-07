@@ -6,17 +6,20 @@ ARG USERNAME=vscode
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 
-# Install dependencies and create the user
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     curl \
-    git \
+    sudo \
+    unzip \
+    vim \
+    zip \
     openssh-client \
-    build-essential && \
-    groupadd --gid $USER_GID $USERNAME && \
-    useradd --uid $USER_UID --gid $USER_GID --create-home $USERNAME && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+    build-essential \
+    git
 
+# Add user and group, and set permissions for required folders
+RUN groupadd --gid $USER_GID $USERNAME \
+    && useradd -s /bin/bash --uid $USER_UID --gid $USER_GID -m $USERNAME
 
-# Set the default user and workspace
-USER $USERNAME
+USER vscode
 WORKDIR /workspace
