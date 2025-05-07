@@ -47,7 +47,6 @@ gowizard
 
 ## 🔧 Requirements
 
-- Go 1.19 or higher
 - Docker installed and running
 - VSCode with Remote Containers extension (for devcontainer support)
 
