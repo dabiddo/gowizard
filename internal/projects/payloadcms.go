@@ -18,7 +18,7 @@ func CreatePayloadCMSProject(name string) string {
 		"-it",
 		"node:20.11.1-alpine",
 		"sh", "-c",
-		fmt.Sprintf("apk add --no-cache git && npm install -g pnpm && npx create-payload-app@latest %s && chown -R $(id -u):$(id -g) %s", name, name))
+		fmt.Sprintf("apk add --no-cache git && npm install -g pnpm && npx create-payload-app@latest -n %s --use-pnpm && chown -R $(id -u):$(id -g) %s", name, name))
 
 	// Set up pipes for real-time output
 	cmd.Stdout = os.Stdout
