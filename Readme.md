@@ -1,17 +1,61 @@
-# GoWizard
+# GoWizard 🧙‍♂️
+---
 
-This is my attempt to migrate my current bash file to create `devcontainer` enviroments to Golang
+A modern CLI tool written in Go to create and manage development containers. GoWizard helps developers quickly set up consistent development environments using devcontainers.
 
-The original project [containerwizard](https://github.com/dabiddo/containerwizard) is still maintained because I have not finished migrating all the templates to this project, and any new templates will be added for the time being, but will eventually become deprecated in order to maintain this new GoWizard repo.
+## 🚀 Features
 
-## Requisites
-This new golang repo uses charm.sh libraries to make the TUI more friendly and colorful, so if you clone this repo, make sure to install the packages needed.
+- Interactive TUI using charm.sh libraries
+- Multiple development container templates
+- Easy configuration and customization
 
-### Build
-Once you have cloned the repo, installed the packages, you can build your own `gowizard` binary, and move the executable to `/usr/local/bin` , I recommend making it executable first `sudo chmod +x gowizard` and the move it to the `bin` folder
+## 📦 Installation
+
+### From Source
 
 ```bash
+# Clone the repository
+git clone https://github.com/dabiddo/gowizard.git
+
+# Navigate to project directory
+cd gowizard
+
+# Install dependencies
 go mod tidy
 
+# Build the binary
 go build -o gowizard ./cmd/gowizard
+
+# Make it executable
+sudo chmod +x gowizard
+
+# Move to PATH (optional)
+sudo mv gowizard /usr/local/bin/
 ```
+
+## 🎮 Usage
+
+```bash
+# Launch GoWizard
+gowizard
+
+# Follow the interactive prompts to:
+# 1. Select your project type
+# 2. Configure container settings
+# 3. Generate devcontainer configuration
+```
+
+## 🔧 Requirements
+
+- Go 1.19 or higher
+- Docker installed and running
+- VSCode with Remote Containers extension (for devcontainer support)
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 🙏 Acknowledgments
+
+- Original [ContainerWizard](https://github.com/dabiddo/containerwizard) project
+- [Charm](https://charm.sh/) for the amazing TUI libraries
