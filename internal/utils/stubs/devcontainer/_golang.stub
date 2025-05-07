@@ -1,5 +1,5 @@
 {
-    "name": "Gowizard",
+    "name":"$DIR",
     "build": {
         "dockerfile": "Dockerfile"
     },

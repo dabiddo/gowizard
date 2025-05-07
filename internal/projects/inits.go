@@ -24,3 +24,9 @@ func NodeProject(name string) {
 	utils.CreateDevContainerInCurrent("_nuxt.stub")
 	utils.CreateDockerfileInCurrent("_nuxt.stub")
 }
+
+func GolangProject(name string) {
+	fmt.Printf("Golang Project '%s' has been successfully created.\n", name)
+	utils.CreateDevContainerInCurrent("_golang.stub")
+	utils.CreateDockerfileInCurrent("_golang.stub")
+}

@@ -29,12 +29,14 @@ var choices = []string{
 	"Create Tanstack Project",
 	"Create NestJs Project",
 	"Create Payload CMS Project",
+	"Create Rust Project",
 }
 
 var initChoices = []string{
 	"Initialize PHP Project",
 	"Initialize PHP Project with FrankenPHP",
 	"Initialize NodeJs Project",
+	"Initialize Golang Project",
 }
 
 // Styling
@@ -252,6 +254,8 @@ func projectChoose(m model) {
 		projects.CreateNestJSProject(m.name)
 	case 13:
 		projects.CreatePayloadCMSProject(m.name)
+	case 14:
+		projects.CreateRustProject(m.name)
 	default:
 		fmt.Printf("Invalid option")
 	}
@@ -272,6 +276,10 @@ func handleInitProject(m initModel) {
 		// Initialize NodeJs project
 		fmt.Printf("Initializing NodeJs project: %s\n", m.name)
 		projects.NodeProject(currentDir)
+	case 3:
+		// Initialize Golang project
+		fmt.Printf("Initializing Golang project: %s\n", m.name)
+		projects.GolangProject(currentDir)
 	default:
 		fmt.Printf("Invalid option")
 	}
