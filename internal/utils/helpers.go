@@ -226,3 +226,65 @@ func CreateDockerComposeInCurrent(stubName string) error {
 
 	return nil
 }
+
+func CopyXdebug(projectName string, stubName string) error {
+	// Create .devcontainer/config directory if it doesn't exist
+	configDir := filepath.Join(projectName, ".devcontainer/config")
+	if err := os.MkdirAll(configDir, 0755); err != nil {
+		return fmt.Errorf("failed to create config directory: %v", err)
+	}
+
+	// Define the path for xdebug.ini inside .devcontainer/config
+	xdebugIniPath := filepath.Join(projectName, ".devcontainer/config", "xdebug.ini")
+
+	// Read the stub file content from embedded files
+	stubPath := filepath.Join("stubs", "configs", stubName)
+	stubContent, err := devContainerStubs.ReadFile(stubPath)
+	if err != nil {
+		return fmt.Errorf("failed to read stub file %s: %w", stubPath, err)
+	}
+
+	// Replace $DIR with current directory name
+	currentDir := filepath.Base(GetCurrentPath())
+	contentString := strings.ReplaceAll(string(stubContent), "$DIR", currentDir)
+
+	// Write the modified content to xdebug.ini
+	if err := os.WriteFile(xdebugIniPath, []byte(contentString), 0644); err != nil {
+		return fmt.Errorf("failed to write to xdebug.ini: %w", err)
+	}
+
+	fmt.Println("Xdebug configuration copied successfully")
+
+	return nil
+}
+
+func CopyXdebugLauch(projectName string, stubName string) error {
+	vscodeDir := filepath.Join(projectName, ".vscode")
+	// Create the .devcontainer directory
+	if err := os.MkdirAll(vscodeDir, 0755); err != nil {
+		return fmt.Errorf("failed to create folder %s: %w", vscodeDir, err)
+	}
+
+	// Define the path for lauch.json inside .vscode/
+	vscodeLauchPath := filepath.Join(projectName, ".vscode", "launch.json")
+
+	// Read the stub file content from embedded files
+	stubPath := filepath.Join("stubs", "vscode", stubName)
+	stubContent, err := devContainerStubs.ReadFile(stubPath)
+	if err != nil {
+		return fmt.Errorf("failed to read stub file %s: %w", stubPath, err)
+	}
+
+	// Replace $DIR with current directory name
+	currentDir := filepath.Base(GetCurrentPath())
+	contentString := strings.ReplaceAll(string(stubContent), "$DIR", currentDir)
+
+	// Write the modified content to vscode launch json
+	if err := os.WriteFile(vscodeLauchPath, []byte(contentString), 0644); err != nil {
+		return fmt.Errorf("failed to write to launch.json: %w", err)
+	}
+
+	fmt.Println("Xdebug VSCode Lauch configuration copied successfully")
+
+	return nil
+}

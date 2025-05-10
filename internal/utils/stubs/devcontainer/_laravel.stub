@@ -5,6 +5,10 @@
     "dockerComposeFile": [
         "docker-compose.yml"
     ],
+    "remoteEnv": {
+        "XDEBUG_MODE": "debug",
+        "XDEBUG_CONFIG": "client_host=host.docker.internal client_port=9003"
+    },
     "features": {
         "ghcr.io/devcontainers/features/git:1": {},
         "ghcr.io/devcontainers/features/node:1": {}
@@ -43,7 +47,8 @@
                 "ErnstStavroBlofeld.php-types",
                 "mintlify.document",
                 "ctf0.vscode-laravel-gotos",
-                "SandaruwanGunathilake.laravel-eloquent-model-attributes"
+                "SandaruwanGunathilake.laravel-eloquent-model-attributes",
+                "xdebug.php-debug"
             ]
         }
     },

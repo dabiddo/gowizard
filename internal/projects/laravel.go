@@ -68,6 +68,8 @@ func CreateLaravelCLIProject(name string) string {
 	utils.CreateDevContainer(name, "_laravel.stub")
 	utils.CreateDockerfile(name, "_laravel.stub")
 	utils.CreateDockerCompose(name, "_laravel.stub")
+	utils.CopyXdebug(name, "_xdebug.stub")
+	utils.CopyXdebugLauch(name, "_xdebug.stub")
 
 	message := fmt.Sprintf("Laravel project '%s' created successfully!\n", name)
 	fmt.Print(message)
@@ -119,6 +121,8 @@ func CreateLaravelStarterProject(name string, using string) string {
 	utils.CreateDevContainer(name, "_laravel.stub")
 	utils.CreateDockerfile(name, "_laravel.stub")
 	utils.CreateDockerCompose(name, "_laravel.stub")
+	utils.CopyXdebug(name, "_xdebug.stub")
+	utils.CopyXdebugLauch(name, "_xdebug.stub")
 
 	message := fmt.Sprintf("Laravel project '%s' created successfully!\n", name)
 	fmt.Print(message)
@@ -159,6 +163,8 @@ func CreateLaravelWithMySQL(name string) string {
 		utils.CreateDevContainer(name, "_laravel.stub")
 		utils.CreateDockerfile(name, "_laravel.stub")
 		utils.CreateDockerCompose(name, "_laravel_mysql8.stub")
+		utils.CopyXdebug(name, "_xdebug.stub")
+		utils.CopyXdebugLauch(name, "_xdebug.stub")
 		done <- true
 	}()
 
@@ -211,6 +217,8 @@ func CreateLaravelWithPostgreSQL(name string) string {
 		utils.CreateDevContainer(name, "_laravel.stub")
 		utils.CreateDockerfile(name, "_laravel.stub")
 		utils.CreateDockerCompose(name, "_laravel_pgsql.stub")
+		utils.CopyXdebug(name, "_xdebug.stub")
+		utils.CopyXdebugLauch(name, "_xdebug.stub")
 		done <- true
 	}()
 
@@ -264,6 +272,8 @@ func CreateLaravelComposerProject(name string) string {
 		utils.CreateDevContainer(name, "_laravel.stub")
 		utils.CreateDockerfile(name, "_laravel.stub")
 		utils.CreateDockerCompose(name, "_laravel.stub")
+		utils.CopyXdebug(name, "_xdebug.stub")
+		utils.CopyXdebugLauch(name, "_xdebug.stub")
 		done <- true
 	}()
 
