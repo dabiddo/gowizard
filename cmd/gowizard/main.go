@@ -31,6 +31,7 @@ var choices = []string{
 	"Create Payload CMS Project",
 	"Create Rust Project",
 	"Create HonoJs Project",
+	"Create HonoJs OpenAPI Project",
 }
 
 var initChoices = []string{
@@ -259,6 +260,8 @@ func projectChoose(m model) {
 		projects.CreateRustProject(m.name)
 	case 15:
 		projects.CreateHonoJsProject(m.name)
+	case 16:
+		projects.CreateHonoOpenApi(m.name)
 	default:
 		fmt.Printf("Invalid option")
 	}
