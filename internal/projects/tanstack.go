@@ -17,7 +17,7 @@ func CreateTanstackProject(name string) string {
 		"-v", fmt.Sprintf("%s:/app", utils.GetCurrentPath()),
 		"-w", "/app",
 		"-it",
-		"node:lts-alpine",
+		"larabox:latest",
 		"sh", "-c",
 		fmt.Sprintf("create-better-t-stack %s && chown -R $(id -u):$(id -g) %s",
 			name, name))
