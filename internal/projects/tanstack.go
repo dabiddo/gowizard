@@ -17,9 +17,9 @@ func CreateTanstackProject(name string) string {
 		"-v", fmt.Sprintf("%s:/app", utils.GetCurrentPath()),
 		"-w", "/app",
 		"-it",
-		"node:lts-alpine",
+		"larabox:latest",
 		"sh", "-c",
-		fmt.Sprintf("apk add --no-cache git && npx create-better-t-stack@latest %s && chown -R $(id -u):$(id -g) %s",
+		fmt.Sprintf("create-better-t-stack %s && chown -R $(id -u):$(id -g) %s",
 			name, name))
 
 	// Set up pipes for real-time output
