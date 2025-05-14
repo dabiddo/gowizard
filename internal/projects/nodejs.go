@@ -18,7 +18,7 @@ func CreateHonoJsProject(name string) string {
 		"-it",
 		"node:lts-alpine",
 		"sh", "-c",
-		fmt.Sprintf("apk add --no-cache git && npm install -g pnpm && pnpm create hono@latest ./%s -t nodejs -i -p pnpm && chown -R $(id -u):$(id -g) %s", name, name))
+		fmt.Sprintf("pnpm create hono ./%s -t nodejs -i -p pnpm && chown -R $(id -u):$(id -g) %s", name, name))
 
 	// Set up pipes for real-time output
 	cmd.Stdout = os.Stdout
@@ -68,7 +68,7 @@ func CreateHonoOpenApi(name string) string {
 		"-it",
 		"node:lts-alpine",
 		"sh", "-c",
-		fmt.Sprintf("apk add --no-cache git && npm install -g pnpm && npx degit w3cj/hono-open-api-starter %s && chown -R $(id -u):$(id -g) %s", name, name))
+		fmt.Sprintf("npx degit w3cj/hono-open-api-starter %s && chown -R $(id -u):$(id -g) %s", name, name))
 
 	// Set up pipes for real-time output
 	cmd.Stdout = os.Stdout

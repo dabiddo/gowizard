@@ -18,7 +18,7 @@ func CreateNestJSProject(name string) string {
 		"-it",
 		"node:lts-alpine",
 		"sh", "-c",
-		fmt.Sprintf("apk add --no-cache git && npm install -g pnpm @nestjs/cli && nest new %s --strict --skip-git --package-manager=pnpm && chown -R $(id -u):$(id -g) %s",
+		fmt.Sprintf("nest new %s --strict --skip-git --package-manager=pnpm && chown -R $(id -u):$(id -g) %s",
 			name, name))
 
 	// Set up pipes for real-time output

@@ -18,7 +18,7 @@ func CreateAstroProject(name string) string {
 		"-it",
 		"node:20.11.1-alpine",
 		"sh", "-c",
-		fmt.Sprintf("apk add --no-cache git && npm install -g pnpm && pnpm create astro@latest %s --template basics --install --git --yes && chown -R $(id -u):$(id -g) %s",
+		fmt.Sprintf("pnpm create astro %s --template basics --install --git --yes && chown -R $(id -u):$(id -g) %s",
 			name, name))
 
 	// Set up pipes for real-time output

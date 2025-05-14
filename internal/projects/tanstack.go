@@ -19,7 +19,7 @@ func CreateTanstackProject(name string) string {
 		"-it",
 		"node:lts-alpine",
 		"sh", "-c",
-		fmt.Sprintf("apk add --no-cache git && npx create-better-t-stack@latest %s && chown -R $(id -u):$(id -g) %s",
+		fmt.Sprintf("create-better-t-stack %s && chown -R $(id -u):$(id -g) %s",
 			name, name))
 
 	// Set up pipes for real-time output
