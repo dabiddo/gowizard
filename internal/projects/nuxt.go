@@ -21,7 +21,7 @@ func CreateNuxtProject(name string) string {
 		"-v", fmt.Sprintf("%s:/app", utils.GetCurrentPath()),
 		"-w", "/app",
 		"-it",
-		"node:20.11.1-alpine",
+		"larabox:latest",
 		"sh", "-c",
 		fmt.Sprintf("pnpm dlx nuxt init %s --yes --package-manager pnpm --git-init && chown -R $(id -u):$(id -g) %s", name, name))
 

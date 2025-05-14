@@ -16,7 +16,7 @@ func CreateRefineProject(name string) string {
 		"-v", fmt.Sprintf("%s:/app", utils.GetCurrentPath()),
 		"-w", "/app",
 		"-it",
-		"node:lts-alpine",
+		"larabox:latest",
 		"sh", "-c",
 		fmt.Sprintf("npm create refine-app %s && chown -R $(id -u):$(id -g) %s",
 			name, name))
