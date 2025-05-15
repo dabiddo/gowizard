@@ -16,7 +16,7 @@ func CreateNestJSProject(name string) string {
 		"-v", fmt.Sprintf("%s:/app", utils.GetCurrentPath()),
 		"-w", "/app",
 		"-it",
-		"larabox:latest",
+		"dabiddo/larabox",
 		"sh", "-c",
 		fmt.Sprintf("nest new %s --strict --skip-git --package-manager=pnpm && chown -R $(id -u):$(id -g) %s",
 			name, name))

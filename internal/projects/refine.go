@@ -16,10 +16,9 @@ func CreateRefineProject(name string) string {
 		"-v", fmt.Sprintf("%s:/app", utils.GetCurrentPath()),
 		"-w", "/app",
 		"-it",
-		"larabox:latest",
+		"node:lts-alpine",
 		"sh", "-c",
-		fmt.Sprintf("npm create refine-app %s && chown -R $(id -u):$(id -g) %s",
-			name, name))
+		fmt.Sprintf("apk add --no-cache git && npm install create-refine-app && npm create refine-app@latest %s && chown -R $(id -u):$(id -g) %s", name, name))
 
 	// Set up pipes for real-time output
 	cmd.Stdout = os.Stdout

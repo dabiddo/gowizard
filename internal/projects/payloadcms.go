@@ -16,7 +16,7 @@ func CreatePayloadCMSProject(name string) string {
 		"-v", fmt.Sprintf("%s:/app", utils.GetCurrentPath()),
 		"-w", "/app",
 		"-it",
-		"larabox:latest",
+		"dabiddo/larabox",
 		"sh", "-c",
 		fmt.Sprintf("npx create-payload-app -n %s --use-pnpm && chown -R $(id -u):$(id -g) %s", name, name))
 

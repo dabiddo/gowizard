@@ -16,7 +16,7 @@ func CreateHonoJsProject(name string) string {
 		"-v", fmt.Sprintf("%s:/app", utils.GetCurrentPath()),
 		"-w", "/app",
 		"-it",
-		"node:lts-alpine",
+		"dabiddo/larabox",
 		"sh", "-c",
 		fmt.Sprintf("pnpm create hono ./%s -t nodejs -i -p pnpm && chown -R $(id -u):$(id -g) %s", name, name))
 
@@ -66,7 +66,7 @@ func CreateHonoOpenApi(name string) string {
 		"-v", fmt.Sprintf("%s:/app", utils.GetCurrentPath()),
 		"-w", "/app",
 		"-it",
-		"node:lts-alpine",
+		"dabiddo/larabox",
 		"sh", "-c",
 		fmt.Sprintf("npx degit w3cj/hono-open-api-starter %s && chown -R $(id -u):$(id -g) %s", name, name))
 
