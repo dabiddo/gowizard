@@ -16,7 +16,7 @@ func CreateAstroProject(name string) string {
 		"-v", fmt.Sprintf("%s:/app", utils.GetCurrentPath()),
 		"-w", "/app",
 		"-it",
-		"larabox:latest",
+		"dabiddo/larabox",
 		"sh", "-c",
 		fmt.Sprintf("pnpm create astro %s --template basics --install --git --yes && chown -R $(id -u):$(id -g) %s",
 			name, name))
