@@ -18,7 +18,9 @@
                 "golang.go",
                 "3timeslazy.vscodium-devpodcontainers",
                 "ms-azuretools.vscode-docker",
-                "ms-azuretools.vscode-containers"
+                "ms-azuretools.vscode-containers",
+                "vivaxy.vscode-conventional-commits",
+                "eamodio.gitlens"
             ]
         }
     }
