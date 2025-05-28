@@ -66,7 +66,7 @@ func CreateAstroBlogProject(name string) string {
 		"-v", fmt.Sprintf("%s:/app", utils.GetCurrentPath()),
 		"-w", "/app",
 		"-it",
-		"larabox:latest",
+		"dabiddo/larabox",
 		"sh", "-c",
 		fmt.Sprintf("apk add --no-cache git && npm install -g pnpm && pnpm create astro@latest %s --template blog --install --git --yes && chown -R $(id -u):$(id -g) %s",
 			name, name))

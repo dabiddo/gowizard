@@ -1,8 +1,8 @@
 package menu
 
 import (
-	"errors"
 	"fmt"
+	"gowizard/internal/projects"
 	"log"
 
 	"github.com/charmbracelet/huh"
@@ -10,70 +10,37 @@ import (
 
 func InitDefault() {
 
-	fmt.Println("Initializing default menu...")
-
 	form := huh.NewForm(
+
+		huh.NewGroup(
+			huh.NewInput().
+				Title("Enter Project Name").
+				Prompt("e.j. My Project: ").Value(&projectName),
+		),
+
 		huh.NewGroup(
 			// Ask the user for a base burger and toppings.
 			huh.NewSelect[string]().
-				Title("Choose your burger").
+				Title("Choose Project Preset").
 				Options(
-					huh.NewOption("Charmburger Classic", "classic"),
-					huh.NewOption("Chickwich", "chickwich"),
-					huh.NewOption("Fishburger", "fishburger"),
-					huh.NewOption("Charmpossible™ Burger", "charmpossible"),
+					huh.NewOption("Create Laravel Project with Composer", "laravel_composer"),
+					huh.NewOption("Create Laravel Project with Laravel CLI", "laravel_cli"),
+					huh.NewOption("Create Laravel Project with MySQ", "laravel_mysql"),
+					huh.NewOption("Create Laravel Project with PostgreSQL", "laravel_pgsql"),
+					huh.NewOption("Create Nuxt Project", "nuxt"),
+					huh.NewOption("Create Nuxt Project with MySQL", "nuxt_mysql"),
+					huh.NewOption("Create Nuxt Project with Pocketbase", "nuxt_pocketbase"),
+					huh.NewOption("Create Astro Project", "astro_web"),
+					huh.NewOption("CCreate Astro Blog Project", "astro_blog"),
+					huh.NewOption("Create Refine.dev Project", "refine"),
+					huh.NewOption("Create Tanstack Project", "better_stack"),
+					huh.NewOption("Create NestJs Project", "nest"),
+					huh.NewOption("Create Payload CMS Project", "payload_cms"),
+					huh.NewOption("Create Rust Project", "rust"),
+					huh.NewOption("Create HonoJs Project", "hono"),
+					huh.NewOption("Create HonoJs OpenAPI Project", "hono_openapi"),
 				).
-				Value(&burger), // store the chosen option in the "burger" variable
-
-			// Let the user select multiple toppings.
-			huh.NewMultiSelect[string]().
-				Title("Toppings").
-				Options(
-					huh.NewOption("Lettuce", "lettuce").Selected(true),
-					huh.NewOption("Tomatoes", "tomatoes").Selected(true),
-					huh.NewOption("Jalapeños", "jalapeños"),
-					huh.NewOption("Cheese", "cheese"),
-					huh.NewOption("Vegan Cheese", "vegan cheese"),
-					huh.NewOption("Nutella", "nutella"),
-				).
-				Limit(4). // there’s a 4 topping limit!
-				Value(&toppings),
-
-			// Option values in selects and multi selects can be any type you
-			// want. We’ve been recording strings above, but here we’ll store
-			// answers as integers. Note the generic "[int]" directive below.
-			huh.NewSelect[int]().
-				Title("How much Charm Sauce do you want?").
-				Options(
-					huh.NewOption("None", 0),
-					huh.NewOption("A little", 1),
-					huh.NewOption("A lot", 2),
-				).
-				Value(&sauceLevel),
-		),
-
-		// Gather some final details about the order.
-		huh.NewGroup(
-			huh.NewInput().
-				Title("What’s your name?").
-				Value(&name).
-				// Validating fields is easy. The form will mark erroneous fields
-				// and display error messages accordingly.
-				Validate(func(str string) error {
-					if str == "Frank" {
-						return errors.New("Sorry, we don’t serve customers named Frank.")
-					}
-					return nil
-				}),
-
-			huh.NewText().
-				Title("Special Instructions").
-				CharLimit(400).
-				Value(&instructions),
-
-			huh.NewConfirm().
-				Title("Would you like 15% off?").
-				Value(&discount),
+				Value(&stackType), // store the chosen option
 		),
 	)
 
@@ -82,7 +49,41 @@ func InitDefault() {
 		log.Fatal(err)
 	}
 
-	if !discount {
-		fmt.Println("What? You didn’t take the discount?!")
+	switch stackType {
+	case "laravel_composer":
+		projects.CreateLaravelProject(projectName)
+		fmt.Println("You chose to create a Laravel project with Composer.")
+	case "laravel_cli":
+		fmt.Println("You chose to create a Laravel project with Laravel CLI.")
+	case "laravel_mysql":
+		fmt.Println("You chose to create a Laravel project with MySQL.")
+	case "laravel_pgsql":
+		fmt.Println("You chose to create a Laravel project with PostgreSQL.")
+	case "nuxt":
+		fmt.Println("You chose to create a Nuxt project.")
+	case "nuxt_mysql":
+		fmt.Println("You chose to create a Nuxt project with MySQL.")
+	case "nuxt_pocketbase":
+		fmt.Println("You chose to create a Nuxt project with Pocketbase.")
+	case "astro_web":
+		fmt.Println("You chose to create an Astro project.")
+	case "astro_blog":
+		projects.CreateAstroBlogProject(projectName)
+	case "refine":
+		fmt.Println("You chose to create a Refine.dev project.")
+	case "better_stack":
+		fmt.Println("You chose to create a Tanstack project.")
+	case "nest":
+		fmt.Println("You chose to create a NestJs project.")
+	case "payload_cms":
+		fmt.Println("You chose to create a Payload CMS project.")
+	case "rust":
+		fmt.Println("You chose to create a Rust project.")
+	case "hono":
+		fmt.Println("You chose to create a HonoJs project.")
+	case "hono_openapi":
+		fmt.Println("You chose to create a HonoJs OpenAPI project.")
+	default:
+		fmt.Println("Invalid option selected.")
 	}
 }

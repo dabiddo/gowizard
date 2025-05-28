@@ -24,3 +24,10 @@ var (
 	instructions string
 	discount     bool
 )
+
+var (
+	projectName string
+	stackType   string
+	appType     string
+	services    []string
+)
