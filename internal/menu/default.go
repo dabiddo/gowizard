@@ -1,9 +1,11 @@
 package menu
 
 import (
+	"bufio"
 	"fmt"
 	"gowizard/internal/projects"
 	"log"
+	"os"
 
 	"github.com/charmbracelet/huh"
 )
@@ -24,6 +26,7 @@ func InitDefault() {
 				Options(
 					huh.NewOption("Create Laravel Project with Composer", "laravel_composer"),
 					huh.NewOption("Create Laravel Project with Laravel CLI", "laravel_cli"),
+					huh.NewOption("Create Laravel Project with Starter Kit", "laravel_starter"),
 					huh.NewOption("Create Laravel Project with MySQ", "laravel_mysql"),
 					huh.NewOption("Create Laravel Project with PostgreSQL", "laravel_pgsql"),
 					huh.NewOption("Create Nuxt Project", "nuxt"),
@@ -51,6 +54,11 @@ func InitDefault() {
 	switch stackType {
 	case "laravel_composer":
 		projects.CreateLaravelProject(projectName)
+	case "laravel_starter":
+		reader := bufio.NewReader(os.Stdin)
+		fmt.Print("Enter starter Project (larave/react): ")
+		starter, _ := reader.ReadString('\n')
+		projects.CreateLaravelStarterProject(projectName, starter)
 	case "laravel_cli":
 		projects.CreateLaravelCLIProject(projectName)
 	case "laravel_mysql":
