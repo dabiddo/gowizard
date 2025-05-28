@@ -19,7 +19,6 @@ func InitDefault() {
 		),
 
 		huh.NewGroup(
-			// Ask the user for a base burger and toppings.
 			huh.NewSelect[string]().
 				Title("Choose Project Preset").
 				Options(
