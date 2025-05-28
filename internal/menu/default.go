@@ -52,37 +52,36 @@ func InitDefault() {
 	switch stackType {
 	case "laravel_composer":
 		projects.CreateLaravelProject(projectName)
-		fmt.Println("You chose to create a Laravel project with Composer.")
 	case "laravel_cli":
-		fmt.Println("You chose to create a Laravel project with Laravel CLI.")
+		projects.CreateLaravelCLIProject(projectName)
 	case "laravel_mysql":
-		fmt.Println("You chose to create a Laravel project with MySQL.")
+		projects.CreateLaravelWithMySQL(projectName)
 	case "laravel_pgsql":
-		fmt.Println("You chose to create a Laravel project with PostgreSQL.")
+		projects.CreateLaravelWithPostgreSQL(projectName)
 	case "nuxt":
-		fmt.Println("You chose to create a Nuxt project.")
+		projects.CreateNuxtProject(projectName)
 	case "nuxt_mysql":
-		fmt.Println("You chose to create a Nuxt project with MySQL.")
+		projects.CreateNuxtWithMySQL(projectName)
 	case "nuxt_pocketbase":
-		fmt.Println("You chose to create a Nuxt project with Pocketbase.")
+		projects.CreateNuxtWithPocketbase(projectName)
 	case "astro_web":
-		fmt.Println("You chose to create an Astro project.")
+		projects.CreateAstroProject(projectName)
 	case "astro_blog":
 		projects.CreateAstroBlogProject(projectName)
 	case "refine":
-		fmt.Println("You chose to create a Refine.dev project.")
+		projects.CreateRefineProject(projectName)
 	case "better_stack":
-		fmt.Println("You chose to create a Tanstack project.")
+		projects.CreateTanstackProject(projectName)
 	case "nest":
-		fmt.Println("You chose to create a NestJs project.")
+		projects.CreateNestJSProject(projectName)
 	case "payload_cms":
-		fmt.Println("You chose to create a Payload CMS project.")
+		projects.CreatePayloadCMSProject(projectName)
 	case "rust":
-		fmt.Println("You chose to create a Rust project.")
+		projects.CreateRustProject(projectName)
 	case "hono":
-		fmt.Println("You chose to create a HonoJs project.")
+		projects.CreateHonoJsProject(projectName)
 	case "hono_openapi":
-		fmt.Println("You chose to create a HonoJs OpenAPI project.")
+		projects.CreateHonoOpenApi(projectName)
 	default:
 		fmt.Println("Invalid option selected.")
 	}
