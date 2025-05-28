@@ -19,4 +19,4 @@ RUN apt-get update && apt-get install -y \
 
 # Set the default user and workspace
 USER $USERNAME
-WORKDIR /workspace
+WORKDIR /app
