@@ -41,6 +41,7 @@ func InitDefault() {
 					huh.NewOption("Create Rust Project", "rust"),
 					huh.NewOption("Create HonoJs Project", "hono"),
 					huh.NewOption("Create HonoJs OpenAPI Project", "hono_openapi"),
+					huh.NewOption("Create Nuxt Project 3", "nuxt_3"),
 				).
 				Value(&stackType), // store the chosen option
 		),
@@ -89,6 +90,8 @@ func InitDefault() {
 		projects.CreateHonoJsProject(projectName)
 	case "hono_openapi":
 		projects.CreateHonoOpenApi(projectName)
+	case "nuxt_3":
+		projects.CreateNuxtThreeProject(projectName)
 	default:
 		fmt.Println("Invalid option selected.")
 	}
