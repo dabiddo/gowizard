@@ -292,6 +292,43 @@ func CreateLaravelComposerProject(name string) string {
 	return "Failed to create Laravel project"
 }
 
+func CreateCakePhpProject(name string) string {
+	// Note: I've commented out the utils.ClearScreen() to keep a clean slate
+	// If you need it, you can uncomment it here.
+
+	// Run Docker command
+	//cmd := exec.Command("docker", "run", "--rm", "-v", fmt.Sprintf("%s:/app", utils.GetCurrentPath()), "composer", "create-project", "--prefer-dist", "cakephp/app:~5.0", name)
+	cmd := exec.Command("docker", "run", "--rm", "-v", fmt.Sprintf("%s:/app", utils.GetCurrentPath()), "composer", "create-project", "--prefer-dist", "cakephp/app:~5.0", name, "--ignore-platform-reqs")
+	// Assign standard output and standard error to the current process
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	if err := cmd.Run(); err != nil {
+		fmt.Printf("\nError creating CakePHP project: %v\n", err)
+		return "Failed to create CakePHP project"
+	}
+
+	// Change ownership of the project directory
+	currentUser, err := user.Current()
+	if err != nil {
+		fmt.Printf("\nError getting current user: %v\n", err)
+		return "Failed to create CakePHP project"
+	}
+
+	// Re-run utils.ClearScreen() if needed after the command finishes.
+	// utils.ClearScreen()
+
+	utils.ChangeOwnership(utils.GetCurrentPath(), currentUser.Username, name)
+	utils.CreateDevContainer(name, "_cakephp.stub")
+	utils.CreateDockerfile(name, "_cakephp.stub")
+	utils.CreateDockerCompose(name, "_cakephp.stub")
+	utils.CopyNginxConf(name, "_cakephpnginx.stub")
+
+	message := fmt.Sprintf("Cakephp project '%s' created successfully!\n", name)
+	fmt.Print(message)
+	return message
+}
+
 // Spinner model
 type spinnerModel struct {
 	spinner spinner.Model
