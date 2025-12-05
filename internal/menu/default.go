@@ -42,6 +42,8 @@ func InitDefault() {
 					huh.NewOption("Create HonoJs Project", "hono"),
 					huh.NewOption("Create HonoJs OpenAPI Project", "hono_openapi"),
 					huh.NewOption("Create Nuxt Project 3", "nuxt_3"),
+					huh.NewOption("Create CakePHP Project", "cakephp"),
+					huh.NewOption("Create Vue 3 Project", "vuejs"),
 				).
 				Value(&stackType), // store the chosen option
 		),
@@ -92,6 +94,10 @@ func InitDefault() {
 		projects.CreateHonoOpenApi(projectName)
 	case "nuxt_3":
 		projects.CreateNuxtThreeProject(projectName)
+	case "cakephp":
+		projects.CreateCakePhpProject(projectName)
+	case "vuejs":
+		projects.CreateVueProject(projectName)
 	default:
 		fmt.Println("Invalid option selected.")
 	}

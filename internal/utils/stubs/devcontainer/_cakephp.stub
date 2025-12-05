@@ -1,0 +1,31 @@
+{
+  "name": "$DIR",
+  "dockerComposeFile": [
+    "docker-compose.yml"
+  ],
+  "service": "app",
+  "workspaceFolder": "/var/www/html",
+  "features": {
+        "ghcr.io/devcontainers/features/git:1": {},
+        "ghcr.io/devcontainers/features/node:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "bmewburn.vscode-intelephense-client",
+        "felixfbecker.php-debug",
+        "ms-vscode.remote-containers",
+        "ms-azuretools.vscode-docker"
+      ],
+      "settings": {
+        "php.executablePath": "/usr/local/bin/php",
+        "php.validate.executablePath": "/usr/local/bin/php"
+      }
+    }
+  },
+  "postCreateCommand": "composer install",
+  "forwardPorts": [
+    8080,
+    3306
+  ]
+}

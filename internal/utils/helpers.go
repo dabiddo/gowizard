@@ -288,3 +288,34 @@ func CopyXdebugLauch(projectName string, stubName string) error {
 
 	return nil
 }
+
+func CopyNginxConf(projectName string, stubName string) error {
+	// Create .devcontainer/config directory if it doesn't exist
+	configDir := filepath.Join(projectName, ".devcontainer")
+	if err := os.MkdirAll(configDir, 0755); err != nil {
+		return fmt.Errorf("failed to create config directory: %v", err)
+	}
+
+	// Define the path for xdebug.ini inside .devcontainer/config
+	xdebugIniPath := filepath.Join(projectName, ".devcontainer", "default.conf")
+
+	// Read the stub file content from embedded files
+	stubPath := filepath.Join("stubs", "configs", stubName)
+	stubContent, err := devContainerStubs.ReadFile(stubPath)
+	if err != nil {
+		return fmt.Errorf("failed to read stub file %s: %w", stubPath, err)
+	}
+
+	// Replace $DIR with current directory name
+	currentDir := filepath.Base(GetCurrentPath())
+	contentString := strings.ReplaceAll(string(stubContent), "$DIR", currentDir)
+
+	// Write the modified content to xdebug.ini
+	if err := os.WriteFile(xdebugIniPath, []byte(contentString), 0644); err != nil {
+		return fmt.Errorf("failed to write to Nginx default.conf: %w", err)
+	}
+
+	fmt.Println("Nginx configuration copied successfully")
+
+	return nil
+}
