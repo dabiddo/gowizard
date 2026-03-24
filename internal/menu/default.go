@@ -100,7 +100,7 @@ func InitDefault() {
 	case "vuejs":
 		projects.CreateVueProject(projectName)
 	case "golang":
-		projects.GolangProject(projectName)
+		projects.CreateGolangProject(projectName)
 	default:
 		fmt.Println("Invalid option selected.")
 	}
