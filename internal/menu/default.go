@@ -44,6 +44,7 @@ func InitDefault() {
 					huh.NewOption("Create Nuxt Project 3", "nuxt_3"),
 					huh.NewOption("Create CakePHP Project", "cakephp"),
 					huh.NewOption("Create Vue 3 Project", "vuejs"),
+					huh.NewOption("Create Golang Project", "golang"),
 				).
 				Value(&stackType), // store the chosen option
 		),
@@ -98,6 +99,8 @@ func InitDefault() {
 		projects.CreateCakePhpProject(projectName)
 	case "vuejs":
 		projects.CreateVueProject(projectName)
+	case "golang":
+		projects.CreateGolangProject(projectName)
 	default:
 		fmt.Println("Invalid option selected.")
 	}
