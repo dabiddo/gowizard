@@ -1,0 +1,13 @@
+FROM mcr.microsoft.com/devcontainers/base:debian
+
+# Install build dependencies
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+    && apt-get -y install --no-install-recommends xz-utils curl
+
+# Download and install Zig (adjust version/arch as needed)
+# This example installs Zig 0.13.0 for x86_64
+RUN curl -O https://ziglang.org/download/0.13.0/zig-linux-x86_64-0.13.0.tar.xz \
+    && tar -xf zig-linux-x86_64-0.13.0.tar.xz \
+    && mv zig-linux-x86_64-0.13.0 /usr/local/zig \
+    && ln -s /usr/local/zig/zig /usr/local/bin/zig \
+    && rm zig-linux-x86_64-0.13.0.tar.xz

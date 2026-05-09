@@ -33,7 +33,7 @@ func InitDefault() {
 					huh.NewOption("Create Nuxt Project with MySQL", "nuxt_mysql"),
 					huh.NewOption("Create Nuxt Project with Pocketbase", "nuxt_pocketbase"),
 					huh.NewOption("Create Astro Project", "astro_web"),
-					huh.NewOption("CCreate Astro Blog Project", "astro_blog"),
+					huh.NewOption("Create Astro Blog Project", "astro_blog"),
 					huh.NewOption("Create Refine.dev Project", "refine"),
 					huh.NewOption("Create Tanstack Project", "better_stack"),
 					huh.NewOption("Create NestJs Project", "nest"),
@@ -46,6 +46,8 @@ func InitDefault() {
 					huh.NewOption("Create Vue 3 Project", "vuejs"),
 					huh.NewOption("Create Golang Project", "golang"),
 					huh.NewOption("Update Image", "update"),
+					huh.NewOption("Create C++ Project", "cpp"),
+					huh.NewOption("Create Zig Project", "zig"),
 				).
 				Value(&stackType), // store the chosen option
 		),
@@ -104,6 +106,10 @@ func InitDefault() {
 		projects.CreateGolangProject(projectName)
 	case "update":
 		projects.UpdateImages(projectName)
+	case "cpp":
+		projects.CreateCppProject(projectName)
+	case "zig":
+		projects.CreateZigProject(projectName)
 	default:
 		fmt.Println("Invalid option selected.")
 	}

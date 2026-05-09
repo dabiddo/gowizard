@@ -1,0 +1,14 @@
+{
+  "name":"$DIR",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ziglang.vscode-zig"
+      ]
+    }
+  },
+  "remoteUser": "vscode"
+}
