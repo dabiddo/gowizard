@@ -26,3 +26,4 @@
 .history/
 
 # End of https://mrkandreev.name/snippets/gitignore-generator/#VisualStudioCode
+.devcontainer/devcontainer-lock.json

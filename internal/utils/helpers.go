@@ -319,3 +319,26 @@ func CopyNginxConf(projectName string, stubName string) error {
 
 	return nil
 }
+
+// Copy and Example Hello World for the Project
+func CopyHelloExample(projectName string, stubName string, fileName string) error {
+
+	// Define the path for xdebug.ini inside .devcontainer/config
+	defaultFileName := filepath.Join(projectName, fileName)
+
+	// Read the stub file content from embedded files
+	stubPath := filepath.Join("stubs", "examples", stubName)
+	stubContent, err := devContainerStubs.ReadFile(stubPath)
+	if err != nil {
+		return fmt.Errorf("failed to read stub file %s: %w", stubPath, err)
+	}
+
+	// Write the content to Dockerfile
+	if err := os.WriteFile(defaultFileName, stubContent, 0644); err != nil {
+		return fmt.Errorf("failed to write to Example File: %w", err)
+	}
+
+	fmt.Println("Hello Example copied successfully")
+
+	return nil
+}

@@ -1,0 +1,25 @@
+{
+   "name":"$DIR",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    // Extensions to install inside the container
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode.cpptools",
+                "ms-vscode.cpptools-extension-pack",
+                "ms-vscode.cmake-tools",
+                "twxs.cmake",
+                "vivaxy.vscode-conventional-commits"
+            ]
+        }
+    },
+    // Use 'forwardPorts' to make a list of ports available locally.
+    // "forwardPorts": [],
+
+    // Use 'postCreateCommand' to run commands after the container is created.
+    // "postCreateCommand": "gcc --version",
+
+    "remoteUser": "vscode"
+}
