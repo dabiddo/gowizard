@@ -43,10 +43,11 @@ const (
 	vanilla projectType = iota
 	PHPFramework
 	JSFramework
+	Other
 )
 
 func (c projectType) String() string {
-	return [...]string{"Vanilla Project", "PHP Framework", "JS Framework"}[c]
+	return [...]string{"Vanilla Project", "PHP Framework", "JS Framework", "Other"}[c]
 }
 
 func main() {
@@ -77,6 +78,7 @@ func main() {
 					huh.NewOption("Vanilla Project", vanilla),
 					huh.NewOption("PHP Framework Project", PHPFramework),
 					huh.NewOption("JS Framework Project", JSFramework),
+					huh.NewOption("Other", Other),
 				),
 
 			huh.NewSelect[string]().
@@ -93,6 +95,13 @@ func main() {
 							huh.NewOption("React", "react"),
 							huh.NewOption("Nuxt 4", "nuxt"),
 							huh.NewOption("Astro", "astro"),
+							huh.NewOption("Astro Blog", "astro_blog"),
+							huh.NewOption("Refine Dev", "refine"),
+							huh.NewOption("Better Stack", "better_stack"),
+							huh.NewOption("Nest Js", "nest"),
+							huh.NewOption("Payload CMS", "payload_cms"),
+							huh.NewOption("Hono JS", "hono"),
+							huh.NewOption("Hono Open API", "hono_openapi"),
 						}
 					case PHPFramework:
 						return []huh.Option[string]{
@@ -100,6 +109,10 @@ func main() {
 							huh.NewOption("Laravel CLI", "laravelcli"),
 							huh.NewOption("Laravel Starterkit", "laravelstarterkit"),
 							huh.NewOption("Symfony", "synfony"),
+						}
+					case Other:
+						return []huh.Option[string]{
+							huh.NewOption("Update Larabox", "update"),
 						}
 					default:
 						return []huh.Option[string]{
@@ -120,14 +133,14 @@ func main() {
 	}
 
 	switch choice {
-	case "laravel_composer":
+	case "laravel":
 		projects.CreateLaravelProject(projectName)
-	case "laravel_starter":
+	case "laravelstarterkit":
 		reader := bufio.NewReader(os.Stdin)
 		fmt.Print("Enter starter Project (larave/react): ")
 		starter, _ := reader.ReadString('\n')
 		projects.CreateLaravelStarterProject(projectName, starter)
-	case "laravel_cli":
+	case "laravelcli":
 		projects.CreateLaravelCLIProject(projectName)
 	case "laravel_mysql":
 		projects.CreateLaravelWithMySQL(projectName)
@@ -139,7 +152,7 @@ func main() {
 		projects.CreateNuxtWithMySQL(projectName)
 	case "nuxt_pocketbase":
 		projects.CreateNuxtWithPocketbase(projectName)
-	case "astro_web":
+	case "astro":
 		projects.CreateAstroProject(projectName)
 	case "astro_blog":
 		projects.CreateAstroBlogProject(projectName)
