@@ -23,7 +23,7 @@ func CreateNuxtProject(name string) string {
 		"-it",
 		"dabiddo/larabox",
 		"sh", "-c",
-		fmt.Sprintf("pnpm dlx nuxt init %s --yes --package-manager pnpm --git-init && chown -R $(id -u):$(id -g) %s", name, name))
+		fmt.Sprintf("pnpm dlx nuxt init %s --yes --package-manager pnpm --git-init --no-install && cd %s && printf 'allowBuilds:\\n  esbuild: true\\n  \"@parcel/watcher\": true\\n' > pnpm-workspace.yaml && pnpm install && chown -R $(id -u):$(id -g) .", name, name))
 
 	// Set up pipes for real-time output
 	cmd.Stdout = os.Stdout
