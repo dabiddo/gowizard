@@ -17,14 +17,29 @@ func CreateNuxtProject(name string) string {
 	utils.ClearScreen()
 
 	// Build the Docker command
+	/*
 	cmd := exec.Command("docker", "run", "--rm",
 		"-v", fmt.Sprintf("%s:/app", utils.GetCurrentPath()),
 		"-w", "/app",
 		"-it",
 		"dabiddo/larabox",
 		"sh", "-c",
-		fmt.Sprintf("pnpm dlx nuxt init %s --yes --package-manager pnpm --git-init && chown -R $(id -u):$(id -g) %s", name, name))
-
+		fmt.Sprintf("pnpm dlx nuxt init %s --yes --package-manager pnpm --git-init --no-install && cd %s && printf 'allowBuilds:\\n  esbuild: true\\n  \"@parcel/watcher\": true\\n' > pnpm-workspace.yaml && pnpm install && chown -R $(id -u):$(id -g) .", name, name))
+		*/
+	cmd := exec.Command("docker", "run", "--rm",
+    "-v", fmt.Sprintf("%s:/app", utils.GetCurrentPath()),
+    "-w", "/app",
+    "dabiddo/larabox",
+    "sh", "-c",
+    fmt.Sprintf(
+        "pnpm create nuxt@latest %s --template minimal --packageManager pnpm --gitInit --no-install && "+
+        "cd %s && "+
+        "printf 'allowBuilds:\\n  esbuild: true\\n  \"@parcel/watcher\": true\\n' > pnpm-workspace.yaml && "+
+        "pnpm install && "+
+        "chown -R $(id -u):$(id -g) .",
+        name, name,
+    ),
+	)
 	// Set up pipes for real-time output
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
